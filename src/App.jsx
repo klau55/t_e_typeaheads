@@ -4,6 +4,7 @@ import './App.css';
 function App() {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [cachedSuggestions, setCachedSuggestions] = useState({});
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -15,7 +16,9 @@ function App() {
       setSuggestions([]);
       return;
     };
-    {
+    if (cachedSuggestions[inputValue]) {
+      setSuggestions(cachedSuggestions[inputValue]);
+    } else {
       fetchSuggestions(inputValue);
     }
   }, [inputValue]);
@@ -23,7 +26,7 @@ function App() {
   const fetchSuggestions = (inputValue) => {
     fetch(`https://api.github.com/search/users?q=${inputValue}+in:login`, {
       headers: {
-        Authorization: 'token TOKEN_GOES_HERE'
+        Authorization: 'token ' + process.env.TOKEN_GOES_HERE
       }
     })
     .then(response => response.json())
@@ -33,6 +36,10 @@ function App() {
         avatar_url: item.avatar_url
       }));
       setSuggestions(users);
+      setCachedSuggestions(prevState => ({
+        ...prevState,
+        [inputValue]: users
+      }));
     })
     .catch(error => {
       console.error('Error fetching GitHub users:', error);
