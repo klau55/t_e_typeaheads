@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+
 function App() {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [cachedSuggestions, setCachedSuggestions] = useState({});
 
-  const token = process.env.REACT_APP_TOKEN || 'REACT_APP_TOKEN';
+  const token = import.meta.env.REACT_APP_TOKEN;
 
   const handleInputChange = (e) => {
     const value = e.target.value;
