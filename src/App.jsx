@@ -4,7 +4,6 @@ import './App.css';
 function App() {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [cachedSuggestions, setCachedSuggestions] = useState({});
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -16,34 +15,30 @@ function App() {
       setSuggestions([]);
       return;
     };
-
-    if (cachedSuggestions[inputValue]) {
-      setSuggestions(cachedSuggestions[inputValue]);
-    } else {
-      fetch(`https://api.github.com/search/users?q=${inputValue}`, {
-          method: 'GET',
-          /*headers: {
-            Authorization: 'TOKEN_HERE'
-          } */
-      })
-        .then(response => response.json())
-        .then(data => {
-          const users = data.items.slice(0, 10).map(item => ({
-            login: item.login,
-            avatar_url: item.avatar_url
-          }));
-          setSuggestions(users);
-          setCachedSuggestions(prevState => ({
-            ...prevState,
-            [inputValue]: users
-          }));
-        })
-        .catch(error => {
-          console.error('Error fetching GitHub users:', error);
-          setSuggestions([]);
-        });
+    {
+      fetchSuggestions(inputValue);
     }
-  }, [inputValue, cachedSuggestions]);
+  }, [inputValue]);
+
+  const fetchSuggestions = (inputValue) => {
+    fetch(`https://api.github.com/search/users?q=${inputValue}+in:login`, {
+      headers: {
+        Authorization: 'token TOKEN_GOES_HERE'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      const users = data.items.slice(0, 10).map(item => ({
+        login: item.login,
+        avatar_url: item.avatar_url
+      }));
+      setSuggestions(users);
+    })
+    .catch(error => {
+      console.error('Error fetching GitHub users:', error);
+      setSuggestions([]);
+    });
+  };
 
   const handleSuggestionClick = (suggestion) => {
     clearInput();
