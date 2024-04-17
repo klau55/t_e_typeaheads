@@ -1,35 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
-    'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
-    'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-    'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-    'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-    'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-    'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
-    'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-    'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-  ];
+  const [cachedSuggestions, setCachedSuggestions] = useState({});
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value);
-    if (value.trim() === '') {
-      setSuggestions([]);
-    } else {
-      const regex = new RegExp(`^${value}`, 'i');
-      const filteredSuggestions = states.filter(state => regex.test(state));
-      setSuggestions(filteredSuggestions);
-    }
   };
 
+  useEffect(() => {
+    if (inputValue.trim() === '') {
+      setSuggestions([]);
+      return;
+    }
+
+    if (cachedSuggestions[inputValue]) {
+      setSuggestions(cachedSuggestions[inputValue]);
+    } else {
+      fetch(`https://api.github.com/search/users?q=${inputValue}`, {
+        headers: {
+          Authorization: 'token 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'
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          const users = data.items.slice(0, 15).map(item => ({
+            login: item.login,
+            avatar_url: item.avatar_url
+          }));
+          setSuggestions(users);
+          setCachedSuggestions(prevState => ({
+            ...prevState,
+            [inputValue]: users
+          }));
+        })
+        .catch(error => {
+          console.error('Error fetching GitHub users:', error);
+          setSuggestions([]);
+        });
+    }
+  }, [inputValue, cachedSuggestions]);
+
   const handleSuggestionClick = (suggestion) => {
-    setInputValue(suggestion);
+    setInputValue('');
     setSuggestions([]);
+    window.open(`https://github.com/${suggestion.login}`, '_blank');
   };
 
   return (
@@ -37,19 +55,24 @@ function App() {
       <input 
         className="typeahead" 
         type="text" 
-        placeholder="States of USA" 
+        placeholder="Github username" 
         value={inputValue} 
         onChange={handleInputChange} 
       />
       {suggestions.length > 0 && (
         <ul className="suggestions">
-          {suggestions.map((suggestion, index) => (
+          {suggestions.map((user, index) => (
             <li 
               key={index} 
               className="suggestion" 
-              onClick={() => handleSuggestionClick(suggestion)}
+              onClick={() => handleSuggestionClick(user)}
             >
-              {suggestion}
+              <img 
+                src={user.avatar_url} 
+                alt="Profile" 
+                className="avatar" 
+              />
+              {user.login}
             </li>
           ))}
         </ul>

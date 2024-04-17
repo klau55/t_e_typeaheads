@@ -5,38 +5,34 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.typeahead-container {
+  position: relative; 
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.suggestions {
+  position: absolute; /* Position suggestions absolutely */
+  top: 100%; /* Position below the input */
+  left: 0; /* Align with the left edge of the input */
+  width: 100%; /* Match the width of the input */
+  border-top: none; /* Remove border on top */
+  border-radius: 0 0 4px 4px; /* Add border radius */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.suggestion {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px;
+  border: 1px solid transparent;
 }
 
-.card {
-  padding: 2em;
+.suggestion:hover {
+  border-color: #ccc;
 }
 
-.read-the-docs {
-  color: #888;
+.avatar {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
 }
