@@ -6,6 +6,8 @@ function App() {
   const [suggestions, setSuggestions] = useState([]);
   const [cachedSuggestions, setCachedSuggestions] = useState({});
 
+  const token = process.env.REACT_APP_TOKEN || 'REACT_APP_TOKEN';
+
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value);
@@ -26,7 +28,7 @@ function App() {
   const fetchSuggestions = (inputValue) => {
     fetch(`https://api.github.com/search/users?q=${inputValue}+in:login`, {
       headers: {
-        Authorization: 'token ' + process.env.TOKEN_GOES_HERE
+        Authorization: `token ${token}`
       }
     })
     .then(response => response.json())
