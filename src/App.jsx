@@ -15,12 +15,16 @@ function App() {
     if (inputValue.trim() === '') {
       setSuggestions([]);
       return;
-    }
+    };
 
     if (cachedSuggestions[inputValue]) {
       setSuggestions(cachedSuggestions[inputValue]);
     } else {
       fetch(`https://api.github.com/search/users?q=${inputValue}`, {
+          method: 'GET',
+          /*headers: {
+            Authorization: 'TOKEN_HERE'
+          } */
       })
         .then(response => response.json())
         .then(data => {
@@ -49,7 +53,7 @@ function App() {
   const clearInput = () => {
     setInputValue('');
     setSuggestions([]);
-  }
+  };
 
   return (
     <div id="the-basics" className="typeahead-container">
@@ -81,6 +85,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default App;
