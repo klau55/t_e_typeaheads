@@ -21,13 +21,10 @@ function App() {
       setSuggestions(cachedSuggestions[inputValue]);
     } else {
       fetch(`https://api.github.com/search/users?q=${inputValue}`, {
-        headers: {
-          Authorization: 'token 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'
-        }
       })
         .then(response => response.json())
         .then(data => {
-          const users = data.items.slice(0, 15).map(item => ({
+          const users = data.items.slice(0, 10).map(item => ({
             login: item.login,
             avatar_url: item.avatar_url
           }));
@@ -45,10 +42,14 @@ function App() {
   }, [inputValue, cachedSuggestions]);
 
   const handleSuggestionClick = (suggestion) => {
-    setInputValue('');
-    setSuggestions([]);
+    clearInput();
     window.open(`https://github.com/${suggestion.login}`, '_blank');
   };
+
+  const clearInput = () => {
+    setInputValue('');
+    setSuggestions([]);
+  }
 
   return (
     <div id="the-basics" className="typeahead-container">
@@ -59,6 +60,7 @@ function App() {
         value={inputValue} 
         onChange={handleInputChange} 
       />
+      <button className="clear-button" onClick={() => clearInput()}>clear</button>
       {suggestions.length > 0 && (
         <ul className="suggestions">
           {suggestions.map((user, index) => (
