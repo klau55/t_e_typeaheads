@@ -26,14 +26,14 @@ function App() {
   }, [inputValue]);
 
   const fetchSuggestions = (inputValue) => {
-    fetch(`https://api.github.com/search/users?q=${inputValue}+in:login`, {
+    fetch(`https://api.github.com/search/users?q=${inputValue}+in:login&per_page=10`, {
       headers: {
         Authorization: `token ${import.meta.env.VITE_TOKEN}`
       }
     })
     .then(response => response.json())
     .then(data => {
-      const users = data.items.slice(0, 10).map(item => ({
+      const users = data.items.map(item => ({
         login: item.login,
         avatar_url: item.avatar_url
       }));
