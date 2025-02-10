@@ -4,9 +4,9 @@ A simple GitHub username typeahead application built with React and Vite. This p
 The application uses a personal access token (stored in an environment variable) to authenticate API requests to GitHub. This keeps your sensitive credentials private and secure. If you clone this project, you'll need to create your own GitHub token to use the app.
 
 ## 1. Clone the Repository
-git clone git@github.com:klau55/t_e_typeaheads.git
+git clone git@github.com:klau55/github_username_typeaheads.git
 
-cd t_e_typeaheads
+cd github_username_typeaheads
 
 ## 2. Install Dependencies
 npm install
