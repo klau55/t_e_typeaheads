@@ -1,8 +1,20 @@
-# React + Vite
+A simple GitHub username typeahead application built with React and Vite. This project demonstrates how to implement an autocomplete search for GitHub users using the GitHub API with a personal access token for authentication.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+The application uses a personal access token (stored in an environment variable) to authenticate API requests to GitHub. This keeps your sensitive credentials private and secure. If you clone this project, you'll need to create your own GitHub token to use the app.
 
-Currently, two official plugins are available:
+## 1. Clone the Repository
+git clone git@github.com:klau55/t_e_typeaheads.git
+cd t_e_typeaheads
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 2. Install Dependencies
+npm install
+
+## 3. Create and add a GitHub Personal Access Token
+go to https://github.com/settings/personal-access-tokens
+generate a personal classic token (any duration, just make sure to select USER tickbox)
+create .env file in root folder
+in .env file paste your token instead of your-token in format VITE_TOKEN=your token
+
+## 4.Run
+npm run dev
