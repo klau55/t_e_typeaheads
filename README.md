@@ -5,6 +5,7 @@ The application uses a personal access token (stored in an environment variable)
 
 ## 1. Clone the Repository
 git clone git@github.com:klau55/t_e_typeaheads.git
+
 cd t_e_typeaheads
 
 ## 2. Install Dependencies
@@ -12,8 +13,11 @@ npm install
 
 ## 3. Create and add a GitHub Personal Access Token
 go to https://github.com/settings/personal-access-tokens
+
 generate a personal classic token (any duration, just make sure to select USER tickbox)
+
 create .env file in root folder
+
 in .env file paste your token instead of your-token in format VITE_TOKEN=your token
 
 ## 4.Run
